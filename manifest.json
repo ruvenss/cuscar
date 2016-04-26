@@ -1,0 +1,8 @@
+{"permissions": ["storage", "unlimitedStorage","clipboardRead","clipboardWrite","contextMenus"],
+ "name":"Cuscar",
+ "manifest_version":2,
+ "offline_enabled": true,
+ "description":"Cuscar Manifest",
+ "version":"0.0.1",
+ "icons": {"128":"icon-cuscar-128x128.png","48": "icon-cuscar-48x48.png","16":"icon-cuscar-16x16.png"},
+ "app": {"background": { "scripts": ["background.js"]}}}
