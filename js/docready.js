@@ -36,5 +36,6 @@ var tomorrow = tyyyy+'-'+tmm+'-'+tdd+' '+thh+':'+tmmm;
 $(document).ready(function () {
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
+		analise_data($("#dataimport").val());
 	});
 });
