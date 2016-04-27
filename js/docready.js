@@ -49,6 +49,9 @@ var csc_noti="NAD+CZ++"; /* Notify Data  */
 var csc_vol = "MEA+AAE+AAW+MTQ:"; /* Volume Data  */
 var csc_weight="MEA+AAE+G+KGM:"; /* Weight Data  */
 var csc_weight="GIS+TX:"; /* Package Number  */
+var csc_packtype="GID+1+1:"; /* Packaging type  */
+var csc_goods="FTX+AAA+++"; /* Goods Desc  */
+var csc_vin="PCI+24+"; /* VIN or CIN */
 $(document).ready(function () {
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
