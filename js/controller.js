@@ -1,7 +1,32 @@
 function export_data(arr_rows) {
+	var dialog = document.querySelector('#dialog2');
+	dialog.showModal();
 	if (arr_rows.length>0) {
 		console.log("Export for : "+ arr_rows.length + " Rows Has begun...");
-		
+		for (var i = arr_rows.length - 1; i >= 0; i--) {
+			var current_row = arr_rows[i];
+			manifest_arrcols=current_row.split("\t");
+			if (manifest_arrcols.length>=21) {
+				/* Skip rows */
+				var bookingid=manifest_arrcols[0];
+				if (bookingid>0) {
+					console.log("Exporting booking id ["+bookingid+"]");
+					var blnumber=manifest_arrcols[1];
+					var pod=manifest_arrcols[2];
+					var onblnumber=manifest_arrcols[3];
+					var shipper=manifest_arrcols[5];
+					var consignee_address=manifest_arrcols[6];
+					var consignee=manifest_arrcols[7];
+					var transit=manifest_arrcols[8];
+					var notify=manifest_arrcols[9];
+				} else {
+					console.log("Skip line "+i+" its value is "+bookingid );
+				}
+			} else {
+				console.log("Skip line "+i+" Columns are not enought" );
+			}
+		}
+
 	}
 }
 function analise_data(data) {
