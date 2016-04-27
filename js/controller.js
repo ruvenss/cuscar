@@ -7,7 +7,7 @@ function analise_data(data) {
 }
 function error_front_end(code) {
 	console.log("Logical Error Detected: code "+code);
-	if (error_front_end==1) {
+	if (code==1) {
 		window.alert("Please paste some manifest data first");
 	}
 }
