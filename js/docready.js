@@ -35,9 +35,20 @@ if(tmm<10) {
 } 
 today = yyyy+'-'+mm+'-'+dd;
 var tomorrow = tyyyy+'-'+tmm+'-'+tdd+' '+thh+':'+tmmm;
-/* Variables CUSCAR */
-var csc_bl="CNI+1+";
-var csc_dod="DTM+342:"; /* Date of Departure */
+/*  CUSCAR's Variables for initial code line */
+var csc_bl  ="CNI+1+";
+var csc_dod ="DTM+342:"; /* Date of Departure */
+var csc_pol ="LOC+76+"; /* Port of loading */
+var csc_pod ="LOC+11+"; /* Port of discharge */
+var csc_pofd="LOC+20+"; /* Port of final discharge */
+var csc_cofd="LOC+28+"; /* Country of final discharge */
+var csc_poc ="LOC+26+"; /* Final City  */
+var csc_cons="NAD+CN++"; /* Consignee Data  */
+var csc_con1="NAD+N1++"; /* Consignee Data BIS  */
+var csc_noti="NAD+CZ++"; /* Notify Data  */
+var csc_vol = "MEA+AAE+AAW+MTQ:"; /* Volume Data  */
+var csc_weight="MEA+AAE+G+KGM:"; /* Weight Data  */
+var csc_weight="GIS+TX:"; /* Package Number  */
 $(document).ready(function () {
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
