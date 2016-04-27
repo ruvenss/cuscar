@@ -29,7 +29,7 @@ function export_data(arr_rows) {
 					var goods_length=manifest_arrcols[17];
 					var goods_width=manifest_arrcols[18];
 					var goods_height=manifest_arrcols[19];
-					
+
 				} else {
 					console.log("Skip line "+i+" its value is "+bookingid );
 				}
@@ -52,7 +52,14 @@ function analise_data(data) {
 			if (manifest_arrcols.length==21) {
 				/* Manifest TYPE PROTEUS */
 				console.log("Manifest type : PROTEUS");
-				return(true);
+				/* Headers check up */
+				if ($("#carrier_code_name").val().length==4) {
+					return(true);
+				} else {
+					error_front_end(3);
+					return(false);
+				}
+				
 			}
 		} else {
 			error_front_end(2);
@@ -69,6 +76,7 @@ function error_front_end(code) {
 	console.log("Logical Error Detected: code "+code);
 	if (code==1) { errmsg="Please paste some manifest data first"; }
 	if (code==2) { errmsg="Insufficient number of rows in the manifest"; }
+	if (code==3) { errmsg="Manifest Carrier Code missing"; }
 	dialog.showModal();
 	$("#msgtext").text(errmsg);
 }
