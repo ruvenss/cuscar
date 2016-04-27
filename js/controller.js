@@ -19,6 +19,17 @@ function export_data(arr_rows) {
 					var consignee=manifest_arrcols[7];
 					var transit=manifest_arrcols[8];
 					var notify=manifest_arrcols[9];
+					var condition=manifest_arrcols[10];
+					var goods=manifest_arrcols[11];
+					var vin=manifest_arrcols[12];
+					var category=manifest_arrcols[13];
+					var blinstructions=manifest_arrcols[14];
+					var weight=manifest_arrcols[15];
+					var volume=manifest_arrcols[16];
+					var goods_length=manifest_arrcols[17];
+					var goods_width=manifest_arrcols[18];
+					var goods_height=manifest_arrcols[19];
+					
 				} else {
 					console.log("Skip line "+i+" its value is "+bookingid );
 				}

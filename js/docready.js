@@ -35,6 +35,9 @@ if(tmm<10) {
 } 
 today = yyyy+'-'+mm+'-'+dd;
 var tomorrow = tyyyy+'-'+tmm+'-'+tdd+' '+thh+':'+tmmm;
+/* Variables CUSCAR */
+var csc_bl="CNI+1+";
+var csc_dod="DTM+342:"; /* Date of Departure */
 $(document).ready(function () {
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
