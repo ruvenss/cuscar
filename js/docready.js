@@ -5,6 +5,8 @@ Creation Date : 27-04-2016
 /* Vars Declaration : */
 var importdata = "";
 var manifest_cols=0;
+var manifest_arrrows=[];
+var manifest_arrcols=[];
 var manifest_rows=0;
 var today = new Date();
 var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
