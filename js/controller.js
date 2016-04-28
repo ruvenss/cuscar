@@ -83,11 +83,14 @@ function showError(anError) {
 }
 function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
+	var cuscar_body="";
+	var departure_date=$("#departure").val();
 	dialog.showModal();
 	if (arr_rows.length>0) {
+		departure_date=departure_date.replace("-", "");
 		console.log("Export for : "+ arr_rows.length + " Rows Has begun...");
-		cuscar_manifest="UNA:+,? '";
-		for (var i = arr_rows.length - 1; i >= 0; i--) {
+		var cuscar_line=0;
+		for (var i = 0; i < arr_rows.length; i++) {
 			var current_row = arr_rows[i];
 			manifest_arrcols=current_row.split("\t");
 			if (manifest_arrcols.length>=21) {
@@ -113,7 +116,10 @@ function export_data(arr_rows) {
 					var goods_length=manifest_arrcols[17];
 					var goods_width=manifest_arrcols[18];
 					var goods_height=manifest_arrcols[19];
-
+					cuscar_line=cuscar_line+1;
+					cuscar_body=cuscar_body+"CNI+"+cuscar_line+"+"+blnumber+"\n";
+					cuscar_body=cuscar_body+"DTM+342:"+departure_date+":102'\n";
+					cuscar_body=cuscar_body+"\n";
 				} else {
 					console.log("Skip line "+i+" its value is "+bookingid );
 				}
@@ -121,7 +127,9 @@ function export_data(arr_rows) {
 				console.log("Skip line "+i+" Columns are not enought" );
 			}
 		}
-		var departure_date=$("#departure").val();
+		var cuscar_header="UNA:+,? '\nUNB+UNOA:1+SAFM:ZZ+310029:ZZ+050706:0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:20050706:102'\nNAD+MS+MAEU:172:166'\nTDT+20+0521+1++SAFM:172:166+++MSTG9:103::SAFMARINE COTONOU:GB'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
+		var cuscar_footer="UNT+699+73300001'\nUNZ+1+733'";
+		cuscar_manifest=cuscar_header+"\n\n"+cuscar_body+cuscar_footer;
 		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'cuscar_manifest_'+departure_date+'.edi'}, function(writableFileEntry) {
 			console.log("Saving..."+cuscar_manifest);
 			writableFileEntry.createWriter(function(writer) {
