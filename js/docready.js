@@ -58,7 +58,6 @@ var fileEntry;
 var gotWritable = false;
 var modeDescription = '';
 $(document).ready(function () {
-	
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
 		if (analise_data($("#dataimport").val())) {

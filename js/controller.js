@@ -121,15 +121,16 @@ function export_data(arr_rows) {
 				console.log("Skip line "+i+" Columns are not enought" );
 			}
 		}
-		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'myfile.html'}, function(writableFileEntry) {
+		var departure_date=$("#departure").val();
+		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'cuscar_manifest_'+departure_date+'.edi'}, function(writableFileEntry) {
 			console.log("Saving..."+cuscar_manifest);
 			writableFileEntry.createWriter(function(writer) {
-		      writer.onerror = errorHandler;
+		      //writer.onerror = errorHandler;
 		      writer.onwriteend = function(e) {
 		        console.log('write complete');
 		      };
-		      writer.write(new Blob(['1234567890'], {type: 'text/plain'}));  
-		    }, errorHandler);
+		      writer.write(new Blob([cuscar_manifest], {type: 'text/plain'}));
+		    });
 		});
 		dialog.close();
 	}
@@ -200,6 +201,7 @@ function error_front_end(code) {
 	if (code==6) { errmsg="Vessel Code is missing"; }
 	if (code==7) { errmsg="Departure date format is incorrect, please use YYYY-MM-DD"; }
 	if (code==8) { errmsg="Port of loading must be an UNLOCODE of 5 characters length"; }
+
 	dialog.showModal();
 	$("#msgtext").text(errmsg);
 }
