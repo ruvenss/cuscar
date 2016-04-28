@@ -4,6 +4,7 @@ Creation Date : 27-04-2016
 */
 /* Vars Declaration : */
 var importdata = "";
+var cuscar_manifest="";
 var manifest_cols=0;
 var manifest_arrrows=[];
 var manifest_arrcols=[];
@@ -52,7 +53,12 @@ var csc_weight="GIS+TX:"; /* Package Number  */
 var csc_packtype="GID+1+1:"; /* Packaging type  */
 var csc_goods="FTX+AAA+++"; /* Goods Desc  */
 var csc_vin="PCI+24+"; /* VIN or CIN */
+/*system variables */
+var fileEntry;
+var gotWritable = false;
+var modeDescription = '';
 $(document).ready(function () {
+	
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
 		if (analise_data($("#dataimport").val())) {

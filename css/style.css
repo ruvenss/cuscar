@@ -1,3 +1,9 @@
+body {
+  font-family: verdana,sans-serif,tahoma,arial;
+  font-size:16px;
+  background-color: #ccc;
+  color:#000;
+}
 dialog {
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 6px;

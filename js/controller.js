@@ -1,8 +1,92 @@
+function saveToEntry(data) {
+	console.log("data: "+data);
+	fileEntry.createWriter(function(fileWriter) {
+		fileWriter.onwriteend = function(e) {
+		  if (this.error)
+		    console.log( 'Error during write: ' + this.error.toString());
+		  else
+		    clearError();
+		};
+		console.log("blob: "+data);
+		var blob = new Blob(data, {type: 'text/plain'});
+		fileWriter.write(blob);
+	});
+}
+
+function setEntry(anEntry, isWritable, name) {
+  fileEntry = anEntry;
+  gotWritable = isWritable;
+  if (fileEntry) {
+    updateModeForBaseName(fileEntry.name);
+  } else if (name) {
+    updateModeForBaseName(name);
+  }
+  updatePath();
+}
+
+// Create a new document. This just wipes the old document.
+function createNew() {
+  replaceDocContentsFromString();
+  setEntry(null, false);
+}
+
+function openFile() {
+  chrome.fileSystem.chooseEntry(function (entry) {
+    if (chrome.runtime.lastError) {
+      showError(chrome.runtime.lastError.message);
+      return;
+    }
+    clearError();
+    setEntry(entry, false);
+    replaceDocContentsFromFileEntry();
+  });
+}
+
+function saveFile() {
+	console.log("cuscar_manifest: "+cuscar_manifest);
+  if (gotWritable) {
+  	console.log("gotWritable");
+    saveToEntry(cuscar_manifest);
+  } else if (fileEntry) {
+    chrome.fileSystem.getWritableEntry(fileEntry, function(entry) {
+    	console.log("getWritableEntry");
+      if (chrome.runtime.lastError) {
+        showError(chrome.runtime.lastError.message);
+        return;
+      }
+      clearError();
+      setEntry(entry, true);
+      console.log("cuscar_manifest2: "+cuscar_manifest);
+      saveToEntry(cuscar_manifest);
+    });
+  } else {
+    saveAs();
+  }
+}
+function saveAs() {
+  chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'manifest.edi', accepts: [ { description: 'Cuscar Manifest files (*.edi)', extensions: ['edi']} ]}, function(entry) {
+    if (chrome.runtime.lastError) {
+      showError(chrome.runtime.lastError.message);
+      return;
+    }
+    console.log("saveAS OK "+cuscar_manifest);
+    clearError();
+    //setEntry("entry", true);
+    saveToEntry(cuscar_manifest);
+  });
+}
+function clearError() {
+	console.log("clearError");
+}
+function showError(anError) {
+  console.log("Err: "+anError);
+}
 function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
 	dialog.showModal();
 	if (arr_rows.length>0) {
 		console.log("Export for : "+ arr_rows.length + " Rows Has begun...");
+		cuscar_manifest="UNA:+,? '";
 		for (var i = arr_rows.length - 1; i >= 0; i--) {
 			var current_row = arr_rows[i];
 			manifest_arrcols=current_row.split("\t");
@@ -37,7 +121,17 @@ function export_data(arr_rows) {
 				console.log("Skip line "+i+" Columns are not enought" );
 			}
 		}
-
+		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'myfile.html'}, function(writableFileEntry) {
+			console.log("Saving..."+cuscar_manifest);
+			writableFileEntry.createWriter(function(writer) {
+		      writer.onerror = errorHandler;
+		      writer.onwriteend = function(e) {
+		        console.log('write complete');
+		      };
+		      writer.write(new Blob(['1234567890'], {type: 'text/plain'}));  
+		    }, errorHandler);
+		});
+		dialog.close();
 	}
 }
 function analise_data(data) {
@@ -54,12 +148,36 @@ function analise_data(data) {
 				console.log("Manifest type : PROTEUS");
 				/* Headers check up */
 				if ($("#carrier_code_name").val().length==4) {
-					return(true);
+						if ($("#carrier_name").val().length>1) {
+							if ($("#vessel_name").val().length>1) {
+								if ($("#vessel_code").val().length>1) {
+									if ($("#departure").val().length==10) {
+										if ($("#pol").val().length==5) {
+											return(true);
+										} else {
+											error_front_end(8);
+											return(false);
+										}
+									} else {
+										error_front_end(7);
+										return(false);
+									}
+								} else {
+									error_front_end(6);
+									return(false);
+								}
+							} else {
+								error_front_end(5);
+								return(false);
+							}
+						} else {
+							error_front_end(4);
+							return(false);
+						}
 				} else {
 					error_front_end(3);
 					return(false);
 				}
-				
 			}
 		} else {
 			error_front_end(2);
@@ -76,7 +194,12 @@ function error_front_end(code) {
 	console.log("Logical Error Detected: code "+code);
 	if (code==1) { errmsg="Please paste some manifest data first"; }
 	if (code==2) { errmsg="Insufficient number of rows in the manifest"; }
-	if (code==3) { errmsg="Manifest Carrier Code missing"; }
+	if (code==3) { errmsg="Manifest Carrier Code is missing or incorrect"; }
+	if (code==4) { errmsg="Manifest Carrier Name is missing"; }
+	if (code==5) { errmsg="Vessel Name is missing"; }
+	if (code==6) { errmsg="Vessel Code is missing"; }
+	if (code==7) { errmsg="Departure date format is incorrect, please use YYYY-MM-DD"; }
+	if (code==8) { errmsg="Port of loading must be an UNLOCODE of 5 characters length"; }
 	dialog.showModal();
 	$("#msgtext").text(errmsg);
 }
