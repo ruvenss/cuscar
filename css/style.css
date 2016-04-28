@@ -4,11 +4,38 @@ body {
   background-color: #ccc;
   color:#000;
 }
-p {
-  font-family: verdana,sans-serif,tahoma,arial;
-  font-size:16px;
-  background-color: #ccc;
-  color:#000;
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size:17px;
+    font-weight:bold;
+}
+textarea{
+  font-family: courier,courier-new;
+}
+button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+table {
+  width: 100%;
+}
+td {
+  width: 50%;
 }
 dialog {
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -24,7 +51,6 @@ dialog::backdrop {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
 }
-
 dialog h1 {
 	background-color: #eee;
 	font-size: 14pt;
@@ -34,7 +60,6 @@ dialog h1 {
 	padding: 4pt;
 	border-bottom: 1px solid black;
 }
-
 dialog div {
 	padding: 10pt;
 }
