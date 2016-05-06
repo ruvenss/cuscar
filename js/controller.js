@@ -81,12 +81,16 @@ function clearError() {
 function showError(anError) {
   console.log("Err: "+anError);
 }
+function cuscar_string(str) {
+	return str.replace(/[.'*+?^${}()|[\]\\]/g, "\\$&");
+}
 function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
 	var cuscar_body="";
 	var departure_date=$("#departure").val();
 	var cuscar_vessel=$("#vessel_name").val();
 	var carrier_name=$("#carrier_name").val();
+	var pol_code=$("#pol").val();
 	var carrier_code_name=$("#carrier_code_name").val();
 	dialog.showModal();
 	if (arr_rows.length>0) {
@@ -102,20 +106,22 @@ function export_data(arr_rows) {
 				/* Skip rows */
 				var bookingid=manifest_arrcols[0];
 				if (bookingid>0) {
-					console.log("Exporting booking id ["+bookingid+"]");
+					console.log("Exporting booking id [" + bookingid + "]");
 					var blnumber=manifest_arrcols[1];
 					var pod=manifest_arrcols[2];
-					var unpod=manifest_arrcols[1].substring(0, 5);
-					var unpodcountry=manifest_arrcols[1].substring(0, 1);
+					//var unpod=manifest_arrcols[1].substring(5, 5);
+					var unpod="SNDKR";
+					//var unpodcountry=manifest_arrcols[1].substring(5, 1);
+					var unpodcountry="SN";
 					var onblnumber=manifest_arrcols[3];
 					var shipper=manifest_arrcols[5];
 					var consignee_address=manifest_arrcols[6];
-					var consignee=manifest_arrcols[7];
+					var consignee=cuscar_string(manifest_arrcols[7]);
 					var transit=manifest_arrcols[8];
-					var notify=manifest_arrcols[9];
+					var notify=cuscar_string(manifest_arrcols[9]);
 					var condition=manifest_arrcols[10];
 					var goods=manifest_arrcols[11];
-					var vin=manifest_arrcols[12];
+					var vin=cuscar_string(manifest_arrcols[12]);
 					var category=manifest_arrcols[13];
 					var blinstructions=manifest_arrcols[14];
 					var weight=manifest_arrcols[15];
@@ -124,8 +130,21 @@ function export_data(arr_rows) {
 					var goods_width=manifest_arrcols[18];
 					var goods_height=manifest_arrcols[19];
 					cuscar_line=cuscar_line+1;
-					cuscar_body=cuscar_body+"CNI+"+cuscar_line+"+"+blnumber+"\n";
+					cuscar_body=cuscar_body+"CNI+"+cuscar_line+"+"+blnumber+"'\n";
 					cuscar_body=cuscar_body+"DTM+342:"+departure_date+":102'\n";
+					cuscar_body=cuscar_body+"LOC+76+:"+pol_code+"::6:ANTWERP'\n";
+					cuscar_body=cuscar_body+"LOC+11+:"+unpod+"::6:"+pod+"'\n";
+					cuscar_body=cuscar_body+"LOC+20+:"+unpod+"::6:"+pod+"'\n";
+					cuscar_body=cuscar_body+"LOC+28+:"+unpodcountry+":::SENEGAL'\n";
+					cuscar_body=cuscar_body+"NAD+CN++:"+consignee+"'\n";
+					cuscar_body=cuscar_body+"NAD+N1++:"+notify+"'\n";
+					cuscar_body=cuscar_body+"NAD+CZ++:"+shipper+"'\n";
+					cuscar_body=cuscar_body+"MEA+AAE+AAW+MTQ:"+volume+"0'\n";
+					cuscar_body=cuscar_body+"MEA+AAE+G+KGM:"+weight+"0'\n";
+					cuscar_body=cuscar_body+"GIS+TX:1'\n";
+					cuscar_body=cuscar_body+"GID+1+1:PK'\n";
+					cuscar_body=cuscar_body+"FTX+AAA+++"+condition+" "+goods+"'\n";
+					cuscar_body=cuscar_body+"PCI+24+CHASSIS "+vin+"'\n";
 					cuscar_body=cuscar_body+"\n";
 				} else {
 					console.log("Skip line "+i+" its value is "+bookingid );
@@ -134,7 +153,7 @@ function export_data(arr_rows) {
 				console.log("Skip line "+i+" Columns are not enought" );
 			}
 		}
-		var cuscar_header="UNA:+,? '\nUNB+UNOA:1+"+carrier_code_name+":ZZ+310029:ZZ+050706:0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:"+departure_date+":102'\nNAD+MS+"+cuscar_vessel+":172:166'\nTDT+20+0521+1++SAFM:172:166+++MSTG9:103::SAFMARINE COTONOU:GB'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
+		var cuscar_header="UNA:+,? '\nUNB+UNOA:1+"+carrier_code_name+":ZZ+310029:ZZ+050706:0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:"+departure_date+":102'\nNAD+MS+"+cuscar_vessel+":172:166'\nTDT+20+0521+1++"+carrier_code_name+":172:166+++MSTG9:103::"+carrier_name+":BE'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
 		var cuscar_footer="UNT+699+73300001'\nUNZ+1+733'";
 		cuscar_manifest=cuscar_header+"\n\n"+cuscar_body+cuscar_footer;
 		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'cuscar_manifest_'+departure_date+'.edi'}, function(writableFileEntry) {
