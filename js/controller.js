@@ -106,6 +106,7 @@ function export_data(arr_rows) {
 					var blnumber=manifest_arrcols[1];
 					var pod=manifest_arrcols[2];
 					var unpod=manifest_arrcols[1].substring(0, 5);
+					var unpodcountry=manifest_arrcols[1].substring(0, 1);
 					var onblnumber=manifest_arrcols[3];
 					var shipper=manifest_arrcols[5];
 					var consignee_address=manifest_arrcols[6];
