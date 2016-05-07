@@ -59,6 +59,8 @@ var fileEntry;
 var gotWritable = false;
 var modeDescription = '';
 $(document).ready(function () {
+	$("#carrier_code_name").mask("aaaa",{placeholder:"____"});
+	$("#departure").mask("9999-99-99",{placeholder:"____-__-__"});
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
 		if (analise_data($("#dataimport").val())) {
