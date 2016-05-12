@@ -1,7 +1,7 @@
 body {
   font-family: verdana,sans-serif,tahoma,arial;
   font-size:16px;
-  background-color: #ccc;
+  background-color: #fff;
   color:#000;
 }
 input {
@@ -14,6 +14,25 @@ input {
     box-sizing: border-box;
     font-size:28px;
     font-family: courier,courier-new;
+}
+header {
+  background-color: #636363;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    left: 0px;
+    background-color: #000;
 }
 textarea{
   font-family: courier,courier-new;
@@ -63,4 +82,7 @@ dialog h1 {
 }
 dialog div {
 	padding: 10pt;
+}
+#content {
+  margin-top: 40px; 
 }

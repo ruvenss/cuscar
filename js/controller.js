@@ -12,7 +12,6 @@ function saveToEntry(data) {
 		fileWriter.write(blob);
 	});
 }
-
 function setEntry(anEntry, isWritable, name) {
   fileEntry = anEntry;
   gotWritable = isWritable;
@@ -23,7 +22,6 @@ function setEntry(anEntry, isWritable, name) {
   }
   updatePath();
 }
-
 // Create a new document. This just wipes the old document.
 function createNew() {
   replaceDocContentsFromString();
