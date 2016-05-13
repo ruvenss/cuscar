@@ -86,12 +86,14 @@ function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
 	var cuscar_body="";
 	var departure_date=$("#departure").val();
-	var cuscar_vessel=$("#vessel_name").val();
+	var cuscar_vessel=$("#vessel_code").val();
+	var vessel_name=$("#vessel_name").val();
 	var carrier_name=$("#carrier_name").val();
 	var pol_code=$("#pol").val();
 	var carrier_code_name=$("#carrier_code_name").val();
 	dialog.showModal();
 	if (arr_rows.length>0) {
+		var subcargo=0;
 		var departure_arr=departure_date.split("-");
 		var departure_year=departure_arr[0];
 		var departure_month=departure_arr[1];
@@ -104,6 +106,7 @@ function export_data(arr_rows) {
 		console.log("Cuscar Departure : "+ cuscar_departure+ ".");
 		console.log("Export for : "+ arr_rows.length + " Rows Has begun...");
 		var cuscar_line=0;
+		var cuscar_line_tr=6;
 		for (var i = 0; i < arr_rows.length; i++) {
 			var current_row = arr_rows[i];
 			manifest_arrcols=current_row.split("\t");
@@ -111,14 +114,13 @@ function export_data(arr_rows) {
 				/* Skip rows */
 				var bookingid=manifest_arrcols[0];
 				if (bookingid>0) {
-					console.log("Exporting booking id [" + bookingid + "]");
 					var blnumber=manifest_arrcols[1];
 					var pod=manifest_arrcols[2];
 					//var unpod=manifest_arrcols[1].substring(5, 5);
 					var unpod="SNDKR";
 					//var unpodcountry=manifest_arrcols[1].substring(5, 1);
 					var unpodcountry="SN";
-					var onblnumber=manifest_arrcols[3];
+					var onblnumber=manifest_arrcols[3].trim();
 					var shipper=manifest_arrcols[5];
 					var consignee_address=manifest_arrcols[6];
 					var consignee=cuscar_string(manifest_arrcols[7]);
@@ -129,29 +131,81 @@ function export_data(arr_rows) {
 					var vin=cuscar_string(manifest_arrcols[12]);
 					var category=manifest_arrcols[13];
 					var blinstructions=manifest_arrcols[14];
-					var weight=manifest_arrcols[15];
-					var volume=manifest_arrcols[16];
+					var weight=manifest_arrcols[15]+"0";
+					var volume=manifest_arrcols[16]+"0";
 					var goods_length=manifest_arrcols[17];
 					var goods_width=manifest_arrcols[18];
 					var goods_height=manifest_arrcols[19];
-					cuscar_line=cuscar_line+1;
-					cuscar_body=cuscar_body+csc_bl+cuscar_line+"+"+blnumber+csc_eof;
-					cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
-					cuscar_body=cuscar_body+csc_dod+cuscar_departure+":102"+csc_eof;
-					cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
-					cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
-					cuscar_body=cuscar_body+csc_pofd+unpod+"::6:"+pod+csc_eof;
-					cuscar_body=cuscar_body+csc_cofd+unpodcountry+":::SENEGAL"+csc_eof;
-					cuscar_body=cuscar_body+csc_cons+consignee+csc_eof;
-					cuscar_body=cuscar_body+csc_con1+consignee+csc_eof;
-					cuscar_body=cuscar_body+csc_ship+shipper+csc_eof;
-					cuscar_body=cuscar_body+csc_vol+volume+csc_eof;
-					cuscar_body=cuscar_body+csc_weight+weight+csc_eof;
-					cuscar_body=cuscar_body+csc_packnumb+"1"+csc_eof;
-					cuscar_body=cuscar_body+csc_packmode+"PK"+csc_eof;
-					cuscar_body=cuscar_body+csc_goods+condition+" "+goods+csc_eof;
-					cuscar_body=cuscar_body+csc_vin+"CHASSIS "+vin+csc_eof;
-					cuscar_body=cuscar_body+"\n";
+					/* Only process master bookings */
+					if (!onblnumber.length>0) {
+						console.log("Exporting booking id [" + bookingid + "]");
+						cuscar_line=cuscar_line+1;
+						cuscar_body=cuscar_body+"DTM+132:20"+cuscar_departure+":108"+csc_eof
+						cuscar_body=cuscar_body+csc_bl+cuscar_line+"+"+blnumber+csc_eof;
+						cuscar_body=cuscar_body+"DTM+342:20"+cuscar_departure+":108"+csc_eof
+						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
+						cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;
+						
+						if (transit.length>0) {
+							if (transit.includes("BAMAKO")===true || transit.includes("MALI")===true) {
+								pot_code="MLBKO";
+							}
+							if (transit.includes("BISSAU")===true ) {
+								pot_code="GWOXB";
+							}
+							if (transit.includes("BANJUL")===true ) {
+								pot_code="BMBJL";
+							}
+							if (transit.includes("BANJUL")===true ) {
+								pot_code="BMBJL";
+							}
+							cuscar_body=cuscar_body+csc_pot+pot_code+"::6:"+transit+csc_eof;
+							cuscar_line_tr=cuscar_line_tr+1;
+						}
+						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:ANTWERP"+csc_eof;
+						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
+						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
+						cuscar_body=cuscar_body+csc_packtypecode+csc_eof;
+						cuscar_body=cuscar_body+csc_ship+shipper+csc_eof;
+						cuscar_body=cuscar_body+csc_cons+consignee+csc_eof;
+						cuscar_body=cuscar_body+csc_con1+notify+csc_eof;
+						cuscar_body=cuscar_body+csc_packtype+category+csc_eof;
+						cuscar_body=cuscar_body+csc_goods+condition+" "+goods+csc_eof;
+						cuscar_body=cuscar_body+csc_vol+volume+csc_eof;
+						cuscar_body=cuscar_body+csc_weight+weight+csc_eof;
+						cuscar_body=cuscar_body+csc_vin+"CHASSIS "+vin+csc_eof;
+						cuscar_body=cuscar_body+csc_packnumb+csc_eof;
+						cuscar_line_tr=cuscar_line_tr+24;
+						/* Check for ON BL Bookings*/
+						subcargo=1;
+						for (var o = 0; o < arr_rows.length; o++) {
+							var onblcurrent_row = arr_rows[o];
+							onblmanifest_arrcols=onblcurrent_row.split("\t");
+							if (onblmanifest_arrcols.length>=21) {
+								/* Skip rows */
+								var onblbookingid=onblmanifest_arrcols[0].trim();
+								if (onblbookingid.length>0) {
+									/* Search for the same Parent ID */
+									if (bookingid==onblmanifest_arrcols[3]) {
+										console.log("-BL Sub Cargo found, as ID "+onblmanifest_arrcols[0]);
+										subcargo=subcargo+1;
+										/* Add Sub Cargo to the EDI BL */
+										console.log("-Adding BL Data to booking ID "+bookingid);
+										cuscar_body=cuscar_body+"GID+"+subcargo+"+1:"+category+csc_eof;
+										cuscar_body=cuscar_body+csc_goods+onblmanifest_arrcols[10]+" "+onblmanifest_arrcols[11]+csc_eof;
+										cuscar_body=cuscar_body+csc_vol+onblmanifest_arrcols[16]+csc_eof;
+										cuscar_body=cuscar_body+csc_weight+onblmanifest_arrcols[15]+csc_eof;
+										cuscar_body=cuscar_body+csc_vin+onblmanifest_arrcols[12]+csc_eof;
+										cuscar_body=cuscar_body+csc_packnumb+csc_eof;
+										cuscar_line_tr=cuscar_line_tr+6;
+									}
+								}
+							}
+						}
+						//cuscar_body=cuscar_body+"\n";
+					} else {
+						console.log("Skip line "+i+" its value is ON BL "+onblnumber );
+					}
 				} else {
 					console.log("Skip line "+i+" its value is "+bookingid );
 				}
@@ -160,10 +214,13 @@ function export_data(arr_rows) {
 			}
 		}
 		
-		var cuscar_header="UNA:+,? '\nUNB+UNOA:1+"+carrier_code_name+":ZZ+310029:ZZ+"+cuscar_departure+":0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:"+departure_date+":102'\nNAD+MS+"+cuscar_vessel+":172:166'\nTDT+20+0521+1++"+carrier_code_name+":172:166+++MSTG9:103::"+carrier_name+":BE'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
-		var cuscar_footer="UNT+699+73300001'\nUNZ+1+733'";
-		cuscar_manifest=cuscar_header+"\n\n"+cuscar_body+cuscar_footer;
-		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'cuscar_manifest_'+departure_date+'.edi'}, function(writableFileEntry) {
+		//var cuscar_header="UNA:+,? '\nUNB+UNOA:1+"+carrier_code_name+":ZZ+310029:ZZ+"+cuscar_departure+":0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:"+departure_date+":102'\nNAD+MS+"+cuscar_vessel+":172:166'\nTDT+20+0521+1++"+carrier_code_name+":172:166+++MSTG9:103::"+carrier_name+":BE'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
+		var cuscar_trailer=cuscar_body.split("\n");
+		var cuscar_trailer_lines=cuscar_trailer.length+5;
+		var cuscar_header="UNA:+.?"+csc_eof+"UNB+UNOA:1+"+csc_agent+":ZZ+310029:ZZ+150624:1917+"+UnixTime+csc_eof+"UNH+"+UnixTime+"0001+CUSCAR:D:95B:UN"+csc_eof+"BGM+85+"+UnixTime+"0001+9"+csc_eof+"DTM+137:20"+cuscar_departure+":102"+csc_eof+"NAD+MS+"+vessel_name+":172:166"+csc_eof+"TDT+20+154+1++"+cuscar_vessel+":172:166+++9075711:::"+vessel_name+csc_eof;
+		var cuscar_footer="UNT+"+cuscar_trailer_lines+"+"+UnixTime+"0001"+csc_eof+"UNZ+1+"+UnixTime+csc_eof;
+		cuscar_manifest=cuscar_header+cuscar_body+cuscar_footer;
+		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'cuscar_manifest_'+departure_date+'_v'+UnixTime+'.edi'}, function(writableFileEntry) {
 			console.log("Saving..."+cuscar_manifest);
 			writableFileEntry.createWriter(function(writer) {
 		      //writer.onerror = errorHandler;
