@@ -120,9 +120,10 @@ function export_data(arr_rows) {
 					var unpod="SNDKR";
 					//var unpodcountry=manifest_arrcols[1].substring(5, 1);
 					var unpodcountry="SN";
+					var unpodcountry_desc="SENEGAL";
 					var onblnumber=manifest_arrcols[3].trim();
 					var shipper=manifest_arrcols[5];
-					var consignee_address=manifest_arrcols[6];
+					var consignee_address=manifest_arrcols[6].trim();
 					var consignee=cuscar_string(manifest_arrcols[7]);
 					var transit=manifest_arrcols[8];
 					var notify=cuscar_string(manifest_arrcols[9]);
@@ -138,6 +139,10 @@ function export_data(arr_rows) {
 					var goods_height=manifest_arrcols[19];
 					/* Only process master bookings */
 					if (!onblnumber.length>0) {
+						consignee_address=consignee_address.replace(/:/g, " ");
+						if (consignee_address.length==0) {
+							consignee_address="DAKAR";
+						}
 						console.log("Exporting booking id [" + bookingid + "]");
 						cuscar_line=cuscar_line+1;
 						cuscar_body=cuscar_body+"DTM+132:20"+cuscar_departure+":108"+csc_eof
@@ -145,10 +150,11 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+"DTM+342:20"+cuscar_departure+":108"+csc_eof
 						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
 						cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;
-						
+						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
 						if (transit.length>0) {
 							if (transit.includes("BAMAKO")===true || transit.includes("MALI")===true) {
 								pot_code="MLBKO";
+								
 							}
 							if (transit.includes("BISSAU")===true ) {
 								pot_code="GWOXB";
@@ -162,18 +168,20 @@ function export_data(arr_rows) {
 							cuscar_body=cuscar_body+csc_pot+pot_code+"::6:"+transit+csc_eof;
 							cuscar_line_tr=cuscar_line_tr+1;
 						}
+						cuscar_body=cuscar_body+csc_cofd+unpodcountry+":::"+unpodcountry_desc+csc_eof;
 						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:ANTWERP"+csc_eof;
 						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
 						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
 						cuscar_body=cuscar_body+csc_packtypecode+csc_eof;
-						cuscar_body=cuscar_body+csc_ship+shipper+csc_eof;
-						cuscar_body=cuscar_body+csc_cons+consignee+csc_eof;
+						cuscar_body=cuscar_body+csc_ship+shipper+":"+shipper+"::"+csc_eof;
+						cuscar_body=cuscar_body+csc_cons+consignee+":"+consignee_address+"::"+csc_eof;
 						cuscar_body=cuscar_body+csc_con1+notify+csc_eof;
 						cuscar_body=cuscar_body+csc_packtype+category+csc_eof;
 						cuscar_body=cuscar_body+csc_goods+condition+" "+goods+csc_eof;
 						cuscar_body=cuscar_body+csc_vol+volume+csc_eof;
 						cuscar_body=cuscar_body+csc_weight+weight+csc_eof;
 						cuscar_body=cuscar_body+csc_vin+"CHASSIS "+vin+csc_eof;
+						cuscar_body=cuscar_body+csc_vin2+"CHASSIS "+vin+csc_eof;
 						cuscar_body=cuscar_body+csc_packnumb+csc_eof;
 						cuscar_line_tr=cuscar_line_tr+24;
 						/* Check for ON BL Bookings*/
@@ -195,7 +203,8 @@ function export_data(arr_rows) {
 										cuscar_body=cuscar_body+csc_goods+onblmanifest_arrcols[10]+" "+onblmanifest_arrcols[11]+csc_eof;
 										cuscar_body=cuscar_body+csc_vol+onblmanifest_arrcols[16]+csc_eof;
 										cuscar_body=cuscar_body+csc_weight+onblmanifest_arrcols[15]+csc_eof;
-										cuscar_body=cuscar_body+csc_vin+onblmanifest_arrcols[12]+csc_eof;
+										cuscar_body=cuscar_body+csc_vin+"CHASSIS "+onblmanifest_arrcols[12]+csc_eof;
+										cuscar_body=cuscar_body+csc_vin2+"CHASSIS "+onblmanifest_arrcols[12]+csc_eof;
 										cuscar_body=cuscar_body+csc_packnumb+csc_eof;
 										cuscar_line_tr=cuscar_line_tr+6;
 									}
