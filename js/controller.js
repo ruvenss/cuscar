@@ -143,6 +143,9 @@ function export_data(arr_rows) {
 						if (consignee_address.length==0) {
 							consignee_address="DAKAR";
 						}
+						if (category=="CAR" || category=="MINI VAN" || category=="TRUCK" || category=="VAN"){
+							category="VH";
+						}
 						console.log("Exporting booking id [" + bookingid + "]");
 						cuscar_line=cuscar_line+1;
 						cuscar_body=cuscar_body+"DTM+132:20"+cuscar_departure+":108"+csc_eof
