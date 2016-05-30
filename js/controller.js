@@ -125,7 +125,7 @@ function export_data(arr_rows) {
 					var shipper=manifest_arrcols[5];
 					var consignee_address=manifest_arrcols[6].trim();
 					var consignee=cuscar_string(manifest_arrcols[7]);
-					var transit=manifest_arrcols[8];
+					var transit=manifest_arrcols[8].trim();
 					var notify=cuscar_string(manifest_arrcols[9]);
 					var condition=manifest_arrcols[10];
 					var goods=manifest_arrcols[11];
@@ -154,7 +154,9 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
 						cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;
 						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
+						var pot_code="";
 						if (transit.length>0) {
+							
 							if (transit.includes("BAMAKO")===true || transit.includes("MALI")===true) {
 								pot_code="MLBKO";
 								

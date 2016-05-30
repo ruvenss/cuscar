@@ -51,6 +51,7 @@ var csc_pot ="LOC+8+:"; /* Port of transit */
 var csc_pofd="LOC+20+:"; /* Port of final discharge */
 var csc_cofd="LOC+28+:"; /* Country of final discharge */
 var csc_poc ="LOC+26+:"; /* Final City  */
+var csc_pot_code="";
 var csc_cons="NAD+CN++:"; /* Consignee Data  */
 var csc_con1="NAD+N1++:"; /* Consignee Data BIS  */
 var csc_noti="NAD+CN++:"; /* Notifier Data  */
