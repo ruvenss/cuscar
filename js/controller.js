@@ -91,6 +91,7 @@ function export_data(arr_rows) {
 	var carrier_name=$("#carrier_name").val();
 	var vessel_code_flag=$("#vessel_code_flag").val();
 	var pol_code=$("#pol").val();
+	var podv_code=$("#pod").val();
 	var carrier_code_name=$("#carrier_code_name").val();
 	dialog.showModal();
 	if (arr_rows.length>0) {
@@ -155,6 +156,8 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
 						/*cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;*/
 						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
+						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:ANTWERP"+csc_eof;
+						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
 						var pot_code="";
 						if (transit.length>0) {
 							
@@ -173,11 +176,12 @@ function export_data(arr_rows) {
 							}
 							cuscar_body=cuscar_body+csc_pot+pot_code+"::6:"+transit+csc_eof;
 							cuscar_line_tr=cuscar_line_tr+1;
+						} else {
+							cuscar_body=cuscar_body+csc_pot+unpod+"::6:"+pod+csc_eof;
+							cuscar_line_tr=cuscar_line_tr+1;
 						}
-						cuscar_body=cuscar_body+csc_cofd+unpodcountry+":::"+unpodcountry_desc+csc_eof;
-						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:ANTWERP"+csc_eof;
-						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
-						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
+						/*cuscar_body=cuscar_body+csc_cofd+unpodcountry+":::"+unpodcountry_desc+csc_eof;
+						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;*/
 						cuscar_body=cuscar_body+csc_packtypecode+csc_eof;
 						cuscar_body=cuscar_body+csc_ship+shipper+":"+shipper+"::"+csc_eof;
 						cuscar_body=cuscar_body+csc_cons+consignee+":"+consignee_address+"::"+csc_eof;
@@ -232,7 +236,7 @@ function export_data(arr_rows) {
 		//var cuscar_header="UNA:+,? '\nUNB+UNOA:1+"+carrier_code_name+":ZZ+310029:ZZ+"+cuscar_departure+":0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:"+departure_date+":102'\nNAD+MS+"+cuscar_vessel+":172:166'\nTDT+20+0521+1++"+carrier_code_name+":172:166+++MSTG9:103::"+carrier_name+":BE'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
 		var cuscar_trailer=cuscar_body.split("\n");
 		var cuscar_trailer_lines=cuscar_trailer.length+5;
-		var cuscar_header="UNA:+.?"+csc_eof+"UNB+UNOA:1+"+csc_agent+":ZZ+310029:ZZ+150624:1917+"+UnixTime+csc_eof+"UNH+"+UnixTime+"0001+CUSCAR:D:95B:UN"+csc_eof+"BGM+85+"+UnixTime+"0001+9"+csc_eof+"DTM+137:20"+cuscar_departure+":102"+csc_eof+"NAD+MS+"+vessel_name+":172:166"+csc_eof+"TDT+20+154+1++"+cuscar_vessel+":172:166+++9075711:::"+vessel_name+":"+vessel_code_flag+csc_eof;
+		var cuscar_header="UNA:+.?"+csc_eof+"UNB+UNOA:1+"+csc_agent+":ZZ+310029:ZZ+150624:1917+"+UnixTime+csc_eof+"UNH+"+UnixTime+"0001+CUSCAR:D:95B:UN"+csc_eof+"BGM+85+"+UnixTime+"0001+9"+csc_eof+"DTM+137:20"+cuscar_departure+":102"+csc_eof+"NAD+MS+"+vessel_name+":172:166"+csc_eof+"TDT+20+154+1++"+cuscar_vessel+":172:166+++9075711:::"+vessel_name+":"+vessel_code_flag+csc_eof+csc_podv+podv_code+":139"+csc_eof;
 		var cuscar_footer="UNT+"+cuscar_trailer_lines+"+"+UnixTime+"0001"+csc_eof+"UNZ+1+"+UnixTime+csc_eof;
 		cuscar_manifest=cuscar_header+cuscar_body+cuscar_footer;
 		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'cuscar_manifest_'+departure_date+'_v'+UnixTime+'.edi'}, function(writableFileEntry) {
