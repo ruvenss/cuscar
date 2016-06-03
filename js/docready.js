@@ -74,9 +74,14 @@ var fileEntry;
 var gotWritable = false;
 var modeDescription = '';
 $(document).ready(function () {
+	$("#vessel_code_flag").select2();
 	Materialize.updateTextFields();
+	$("#vessel_code").mask("aaa",{placeholder:"___"});
 	$("#carrier_code_name").mask("aaaa",{placeholder:"____"});
 	$("#departure").mask("9999-99-99",{placeholder:"____-__-__"});
+	$("#arrival").mask("9999-99-99",{placeholder:"____-__-__"});
+	$("#pol").mask("aaaaa",{placeholder:"_____"});
+	$("#pod").mask("aaaaa",{placeholder:"_____"});
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
 		if (analise_data($("#dataimport").val())) {
