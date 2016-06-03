@@ -100,7 +100,7 @@ function export_data(arr_rows) {
 		var departure_year=departure_arr[0];
 		var departure_month=departure_arr[1];
 		var departure_day=departure_arr[2];
-		var departure_year_cuscar=departure_year.substr(departure_year.length - 2)
+		var departure_year_cuscar=departure_year.substr(departure_year.length - 2);
 		var cuscar_departure=departure_year_cuscar+departure_month+departure_day;
 		departure_date=departure_date.replace(/-/g, "");
 		cuscar_vessel=cuscar_vessel.replace(/ /g, "+");
@@ -150,9 +150,9 @@ function export_data(arr_rows) {
 						}
 						console.log("Exporting booking id [" + bookingid + "]");
 						cuscar_line=cuscar_line+1;
-						cuscar_body=cuscar_body+"DTM+132:20"+cuscar_departure+":108"+csc_eof
+						cuscar_body=cuscar_body+"DTM+132:20"+cuscar_departure+":108"+csc_eof;
 						cuscar_body=cuscar_body+csc_bl+cuscar_line+"+"+blnumber+csc_eof;
-						cuscar_body=cuscar_body+"DTM+342:20"+cuscar_departure+":108"+csc_eof
+						cuscar_body=cuscar_body+"DTM+342:20"+cuscar_departure+":108"+csc_eof;
 						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
 						/*cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;*/
 						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
@@ -160,10 +160,10 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
 						var pot_code="";
 						if (transit.length>0) {
-							
+
 							if (transit.includes("BAMAKO")===true || transit.includes("MALI")===true) {
 								pot_code="MLBKO";
-								
+
 							}
 							if (transit.includes("BISSAU")===true ) {
 								pot_code="GWOXB";
@@ -184,7 +184,7 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;*/
 						cuscar_body=cuscar_body+csc_packtypecode+csc_eof;
 						cuscar_body=cuscar_body+csc_ship+shipper+":"+shipper+"::"+csc_eof;
-						cuscar_body=cuscar_body+csc_cons+consignee+":"+consignee_address+"::"+csc_eof;
+						cuscar_body=cuscar_body+csc_cons+consignee+":"+consignee_address+" "+transit+"::"+csc_eof;
 						cuscar_body=cuscar_body+csc_con1+notify+csc_eof;
 						cuscar_body=cuscar_body+csc_packtype+category+csc_eof;
 						cuscar_body=cuscar_body+csc_goods+condition+" "+goods+csc_eof;
@@ -232,7 +232,7 @@ function export_data(arr_rows) {
 				console.log("Skip line "+i+" Columns are not enought" );
 			}
 		}
-		
+
 		//var cuscar_header="UNA:+,? '\nUNB+UNOA:1+"+carrier_code_name+":ZZ+310029:ZZ+"+cuscar_departure+":0854+733'\nUNH+73300001+CUSCAR:D:95B:UN'\nBGM+85+P34+9'\nDTM+137:"+departure_date+":102'\nNAD+MS+"+cuscar_vessel+":172:166'\nTDT+20+0521+1++"+carrier_code_name+":172:166+++MSTG9:103::"+carrier_name+":BE'\nDTM+132:20050701:102'\n\n\nEQD+CN+CAXU9971839+45G1:102:5++3+5'\nEQD+CN+CMBU4067719+42G1:102:5++3+5'";
 		var cuscar_trailer=cuscar_body.split("\n");
 		var cuscar_trailer_lines=cuscar_trailer.length+5;
