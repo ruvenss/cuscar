@@ -74,6 +74,7 @@ var fileEntry;
 var gotWritable = false;
 var modeDescription = '';
 $(document).ready(function () {
+	Materialize.updateTextFields();
 	$("#carrier_code_name").mask("aaaa",{placeholder:"____"});
 	$("#departure").mask("9999-99-99",{placeholder:"____-__-__"});
 	$("#export-btn").click(function(e) {

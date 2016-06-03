@@ -142,7 +142,7 @@ function export_data(arr_rows) {
 					/* Only process master bookings */
 					if (!onblnumber.length>0) {
 						consignee_address=consignee_address.replace(/:/g, " ");
-						if (consignee_address.length==0) {
+						if (consignee_address.length===0) {
 							consignee_address="DAKAR";
 						}
 						if (category=="CAR" || category=="MINI VAN" || category=="TRUCK" || category=="VAN"){

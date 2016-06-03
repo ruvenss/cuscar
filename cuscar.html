@@ -6,72 +6,98 @@
     <link rel="stylesheet" href="css/style.css" />
 	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <script type="text/javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/events.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+	<script type="text/javascript" src="js/events.js"></script>
     <script type="text/javascript" src="js/controller.js"></script>
     <script type="text/javascript" src="js/docready.js"></script>
 	<script type="text/javascript" src="js/masked.min.js"></script>
-	<script type="text/javascript" src="js/materialize.min.js"></script>
+	
 </head>
 <body>
-	<dialog id="dialog1">
-		<h1>CUSCAR MANIFEST</h1>
-		<div>
-			<p id="msgtext"></p>
-			<button id="close">Close</button>
+	<div class="container">
+		<dialog id="dialog1">
+			<h1>CUSCAR MANIFEST</h1>
+			<div>
+				<p id="msgtext"></p>
+				<button id="close">Close</button>
+			</div>
+		</dialog>
+		<dialog id="dialog2">
+			<h1>CUSCAR MANIFEST</h1>
+			<div>
+				<p>Processing...</p>
+			</div>
+		</dialog>
+		<div id="content">
+			<div class="row">
+				<div class="input-field col s6">
+					<input class="validate" id="carrier_code_name" type="input" name="carrier_code_name" value="BEST" /><label for="carrier_code_name">Carrier Code :</label>
+				</td>	
+				</div>
+				<div class="col s6">
+					*Carrier Name : <input id="carrier_name" type="input" value="JOHN P BEST" />
+				</div>
+				<div class="col s6">
+					*Vessel : <input id="vessel_name" type="input" value="PAGNA"/>
+				</div>
+				<div class="col s6">
+					*Vessel Code : <input id="vessel_code" type="input" value="PGN"/>
+				</div>
+				<div class="col s6">
+					*Vessel Country Flag : <input id="vessel_code_flag" type="input" value="GI"/>
+				</div>
+				<div class="col s6">
+					*Departure date : <input value="2016-05-04" id="departure" type="input" />
+				</div>
+				<div class="col s6">
+					ETA date : <input value="2016-05-04" id="arrival" type="input" />
+				</div>
+				<div class="col s6">
+					*Port of Loading : <input id="pol" type="input" value="BEANR"/>
+				</div>
+				<div class="col s6">
+					*Port of Discharge : <input id="pod" type="input" value="SNDKR"/>
+				</div>
+				<div class="col s6">
+					* <i class="fa fa-copy"></i> PASTE HERE YOUR MANIFEST
+				</div>
+				<div class="col s6">
+					<textarea rows="4" cols="50" id="dataimport"></textarea>
+				</div>
+				<div class="col s6">
+				<p id="result">
+				</p>
+				</div>
+			</div>
 		</div>
-	</dialog>
-	<dialog id="dialog2">
-		<h1>CUSCAR MANIFEST</h1>
-		<div>
-			<p>Processing...</p>
-		</div>
-	</dialog>
-	<div id="content">
-		<div class="row">
-			<div class="col s6">
-				<label for="carrier_code_name">Carrier Code :</label></td><td><input id="carrier_code_name" type="input" name="carrier_code_name" value="BEST" />
-			</td>	
-			</div>
-			<div class="col s6">
-				*Carrier Name : <input id="carrier_name" type="input" value="JOHN P BEST" />
-			</div>
-			<div class="col s6">
-				*Vessel : <input id="vessel_name" type="input" value="PAGNA"/>
-			</div>
-			<div class="col s6">
-				*Vessel Code: <input id="vessel_code" type="input" value="PGN"/>
-			</div>
-			<div class="col s6">
-				*Vessel Country Flag: <input id="vessel_code_flag" type="input" value="GI"/>
-			</div>
-			<div class="col s6">
-				*Departure date : <input value="2016-05-04" id="departure" type="input" />
-			</div>
-			<div class="col s6">
-				ETA date : <input value="2016-05-04" id="arrival" type="input" />
-			</div>
-			<div class="col s6">
-				*Port of Loading : <input id="pol" type="input" value="BEANR"/>
-			</div>
-			<div class="col s6">
-				*Port of Discharge : <input id="pod" type="input" value="SNDKR"/>
-			</div>
-			<div class="col s6">
-				* <i class="fa fa-copy"></i> PASTE HERE YOUR MANIFEST
-			</div>
-			<div class="col s6">
-				<textarea rows="4" cols="50" id="dataimport"></textarea>
-			</div>
-			<div class="col s6">
-			<p id="result">
+		<footer class="page-footer">
+			<p>
+				<button class="waves-effect waves-light btn" id="export-btn">EXPORT TO CUSCAR FORMAT</button>
 			</p>
-			</div>
-		</div>
+			<div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+		</footer>
 	</div>
-	<footer>
-		<p>
-			<button id="export-btn">EXPORT TO CUSCAR FORMAT</button>
-		</p>
-	</footer>
 </body>
 </html>
