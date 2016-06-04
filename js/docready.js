@@ -75,6 +75,8 @@ var gotWritable = false;
 var modeDescription = '';
 $(document).ready(function () {
 	$("#vessel_code_flag").select2();
+	$("#pol").select2();
+	$("#pod").select2();
 	Materialize.updateTextFields();
 	$("#vessel_code").mask("aaa",{placeholder:"___"});
 	$("#carrier_code_name").mask("aaaa",{placeholder:"____"});
