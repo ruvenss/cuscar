@@ -84,6 +84,7 @@ $(document).ready(function () {
 	$("#arrival").mask("9999-99-99",{placeholder:"____-__-__"});
 	$("#pol").mask("aaaaa",{placeholder:"_____"});
 	$("#pod").mask("aaaaa",{placeholder:"_____"});
+	$("#vessel_code").mask("aaa",{placeholder:"___"});
 	$("#export-btn").click(function(e) {
 		console.log("export button clicked");
 		if (analise_data($("#dataimport").val())) {

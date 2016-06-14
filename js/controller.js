@@ -86,14 +86,14 @@ function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
 	var cuscar_body="";
 	var departure_date=$("#departure").val();
-	var cuscar_vessel=$("#vessel_code").val();
-	var vessel_name=$("#vessel_name").val();
-	var carrier_name=$("#carrier_name").val();
+	var cuscar_vessel=$("#vessel_code").val().toUpperCase();
+	var vessel_name=$("#vessel_name").val().toUpperCase();
+	var carrier_name=$("#carrier_name").val().toUpperCase();
 	var vessel_code_flag=$("#vessel_code_flag").val();
 	var pol_code=$("#pol").val();
 	var podv_code=$("#pod").val();
-	var voyage=$("#voyage").val();
-	var carrier_code_name=$("#carrier_code_name").val();
+	var voyage=$("#voyage").val().toUpperCase();
+	var carrier_code_name=$("#carrier_code_name").val().toUpperCase();
 	dialog.showModal();
 	if (arr_rows.length>0) {
 		var subcargo=0;
@@ -161,20 +161,28 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
 						var pot_code="";
 						if (transit.length>0) {
-							/*
+							
 							if (transit.includes("BAMAKO")===true || transit.includes("MALI")===true) {
-								pot_code="MLBKO";
-
+								/*pot_code="MLBKO";*/
+								unpodcountry="ML";
+								unpodcountry_desc="MALI";
 							}
 							if (transit.includes("BISSAU")===true ) {
-								pot_code="GWOXB";
+								/*pot_code="GWOXB";*/
+								unpodcountry="GW";
+								unpodcountry_desc="Guinea-Bissau";
 							}
 							if (transit.includes("BANJUL")===true ) {
-								pot_code="BMBJL";
+								/*pot_code="GMBJL";*/
+								unpodcountry="GM";
+								unpodcountry_desc="BANJUL";
 							}
 							if (transit.includes("BANJUL")===true ) {
-								pot_code="BMBJL";
+								/*pot_code="GMBJL";*/
+								unpodcountry="GM";
+								unpodcountry_desc="BANJUL";
 							}
+							/*
 							cuscar_body=cuscar_body+csc_pot+pot_code+"::6:"+transit+csc_eof;
 							cuscar_line_tr=cuscar_line_tr+1;
 							*/
