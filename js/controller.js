@@ -182,6 +182,11 @@ function export_data(arr_rows) {
 								unpodcountry="GM";
 								unpodcountry_desc="BANJUL";
 							}
+							if (transit.includes("NOUAKCHOTT")===true ) {
+								/*pot_code="MRNKC";*/
+								unpodcountry="MR";
+								unpodcountry_desc="MAURITANIA";
+							}
 							/*
 							cuscar_body=cuscar_body+csc_pot+pot_code+"::6:"+transit+csc_eof;
 							cuscar_line_tr=cuscar_line_tr+1;
