@@ -161,7 +161,7 @@ function export_data(arr_rows) {
 						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
 						var pot_code="";
 						if (transit.length>0) {
-							
+							/* Irregular Magic to guess the COD*/
 							if (transit.includes("BAMAKO")===true || transit.includes("MALI")===true) {
 								/*pot_code="MLBKO";*/
 								unpodcountry="ML";
