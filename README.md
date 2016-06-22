@@ -3,6 +3,9 @@ Cuscar Manifest data import
 This application will allow you to import data from a economic manifest made in Excel Sheet 
 and transform it into cuscar electronic format stablished by the UN
 
+Download last version form the Google Chrome Chrome Web Store:
+<https://chrome.google.com/webstore/detail/cuscar/nccnheemapbgjijclfpooeonkkcffjki?hl=en>
+
 Technolgy use:
 
 1. JavaScript
