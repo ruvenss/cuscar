@@ -1,3 +1,11 @@
+function getSelectedText(elementId) {
+    var elt = document.getElementById(elementId);
+
+    if (elt.selectedIndex == -1)
+        return null;
+
+    return elt.options[elt.selectedIndex].text;
+}
 function saveToEntry(data) {
 	console.log("data: "+data);
 	fileEntry.createWriter(function(fileWriter) {
@@ -94,8 +102,11 @@ function export_data(arr_rows) {
 	var podv_code=$("#pod").val();
 	var voyage=$("#voyage").val().toUpperCase();
 	var carrier_code_name=$("#carrier_code_name").val().toUpperCase();
+	csc_agent=$("#carrier_code_name").val();
 	dialog.showModal();
+	var pol_desc=getSelectedText("pol");
 	if (arr_rows.length>0) {
+		console.log("pol_desc: "+pol_desc);
 		var subcargo=0;
 		var departure_arr=departure_date.split("-");
 		var departure_year=departure_arr[0];
@@ -106,8 +117,6 @@ function export_data(arr_rows) {
 		departure_date=departure_date.replace(/-/g, "");
 		cuscar_vessel=cuscar_vessel.replace(/ /g, "+");
 		carrier_name=carrier_name.replace(/ /g, "+");
-		console.log("Cuscar Departure : "+ cuscar_departure+ ".");
-		console.log("Export for : "+ arr_rows.length + " Rows Has begun...");
 		var cuscar_line=0;
 		var cuscar_line_tr=6;
 		for (var i = 0; i < arr_rows.length; i++) {
@@ -156,8 +165,9 @@ function export_data(arr_rows) {
 						//cuscar_body=cuscar_body+"DTM+342:20"+cuscar_departure+":108"+csc_eof;
 						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
 						/*cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;*/
-						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:ANTWERP"+csc_eof;
-						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:ANTWERP"+csc_eof;
+						
+						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:"+pol_desc+csc_eof;
+						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:"+pol_desc+csc_eof;
 						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
 						var pot_code="";
 						if (transit.length>0) {
