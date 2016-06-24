@@ -88,7 +88,10 @@ function showError(anError) {
   console.log("Err: "+anError);
 }
 function cuscar_string(str) {
-	return str.replace(/[.'*+?^${}()|[\]\\]/g, "\\$&");
+		return str.replace(/[.'+?^${}()|[\]\\]/g, "\\$&");
+}
+function cleandata1(str){
+	return str.replace(/[:€™°]/g, ' ');
 }
 function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
@@ -135,15 +138,15 @@ function export_data(arr_rows) {
 					var unpodcountry_desc="SENEGAL";
 					var onblnumber=manifest_arrcols[3].trim();
 					var shipper=manifest_arrcols[5];
-					var consignee_address=manifest_arrcols[6].trim();
-					var consignee=cuscar_string(manifest_arrcols[7]);
+					var consignee_address=removeDiacritics(manifest_arrcols[6].trim());
+					var consignee=removeDiacritics(cuscar_string(manifest_arrcols[7]));
 					var transit=manifest_arrcols[8].trim();
-					var notify=cuscar_string(manifest_arrcols[9]);
+					var notify=removeDiacritics(cuscar_string(manifest_arrcols[9]));
 					var condition=manifest_arrcols[10];
 					var goods=manifest_arrcols[11];
 					var vin=cuscar_string(manifest_arrcols[12]);
 					var category=manifest_arrcols[13];
-					var blinstructions=manifest_arrcols[14];
+					var blinstructions=removeDiacritics(manifest_arrcols[14]);
 					var weight=manifest_arrcols[15]+"0";
 					var volume=manifest_arrcols[16]+"0";
 					var goods_length=manifest_arrcols[17];
@@ -160,12 +163,8 @@ function export_data(arr_rows) {
 						}
 						console.log("Exporting booking id [" + bookingid + "]");
 						cuscar_line=cuscar_line+1;
-						//cuscar_body=cuscar_body+"DTM+132:20"+cuscar_departure+":102"+csc_eof;
 						cuscar_body=cuscar_body+csc_bl+cuscar_line+"+"+blnumber+csc_eof;
-						//cuscar_body=cuscar_body+"DTM+342:20"+cuscar_departure+":108"+csc_eof;
 						cuscar_body=cuscar_body+csc_blrff+blnumber+csc_eof;
-						/*cuscar_body=cuscar_body+csc_pol2+pol_code+"::6:ANTWERP"+csc_eof;*/
-						
 						cuscar_body=cuscar_body+csc_pol+pol_code+"::6:"+pol_desc+csc_eof;
 						cuscar_body=cuscar_body+csc_pol3+pol_code+"::6:"+pol_desc+csc_eof;
 						cuscar_body=cuscar_body+csc_pod+unpod+"::6:"+pod+csc_eof;
