@@ -171,13 +171,23 @@ var loccountries=[['AF','Afganistan'],['AX','Aland Islands'],['AL','Albania'],['
 var fileEntry;
 var gotWritable = false;
 var modeDescription = '';
+var listItems="";
 $(document).ready(function () {
 	$("#vessel_code_flag").select2();
 	$("#pol").select2();
 	$("#pod").select2();
 	Materialize.updateTextFields();
 	$("#vessel_code").mask("aaa",{placeholder:"___"});
-	$("#carrier_code_name").mask("aaaa",{placeholder:"____"});
+	//$("#carrier_code_name").mask("aaaa",{placeholder:"____"});
+	$.post("/data/carriers.json", {}, function(result,status){
+		datacarriers=$.parseJSON(result);
+		for (var i = 0; i < datacarriers.length; i++) {
+			//console.log("datacarriers[i].val "+datacarriers[i].val);
+             listItems += "<option value='" + datacarriers[i].val + "'>"+datacarriers[i].val+ " " + datacarriers[i].text + "</option>";
+         }
+         $("#carrier_code_name").html(listItems);
+    });
+	$("#carrier_code_name").select2();
 	$("#departure").mask("9999-99-99",{placeholder:"____-__-__"});
 	$("#arrival").mask("9999-99-99",{placeholder:"____-__-__"});
 	$("#pol").mask("aaaaa",{placeholder:"_____"});
