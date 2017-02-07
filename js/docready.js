@@ -1,6 +1,7 @@
 /* Cuscar Application
 Author: Ruvenss G. Wilches (me@ruvenss.com)
 Creation Date : 27-04-2016
+Update Date : 08-02-2017
 */
 /* Vars Declaration : */		
 var importdata = "";
@@ -198,6 +199,8 @@ $(document).ready(function () {
 		console.log("export button clicked");
 		if (analise_data(rawdata)) {
 			export_data(manifest_arrrows);
-		}
+		} else {
+            alert("Spreadsheet not in the correct format");
+        }
 	});
 });

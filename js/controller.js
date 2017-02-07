@@ -322,6 +322,9 @@ function analise_data(data) {
 					error_front_end(3);
 					return(false);
 				}
+			} else {
+				error_front_end(9);
+				return(false);
 			}
 		} else {
 			error_front_end(2);
@@ -344,7 +347,7 @@ function error_front_end(code) {
 	if (code==6) { errmsg="Vessel Code is missing"; }
 	if (code==7) { errmsg="Departure date format is incorrect, please use YYYY-MM-DD"; }
 	if (code==8) { errmsg="Port of loading must be an UNLOCODE of 5 characters length"; }
-
+	if (code==9) { errmsg="Proteus manifest is fake, please use a the correct Proteus Manifest"; }
 	dialog.showModal();
 	$("#msgtext").text(errmsg);
 }
