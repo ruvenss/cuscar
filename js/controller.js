@@ -290,6 +290,7 @@ function analise_data(data) {
 			if (manifest_arrcols.length==21) {
 				/* Manifest TYPE PROTEUS */
 				console.log("Manifest type : PROTEUS");
+				$("#result").html($("#result").html()+"<br><span style='color:green'>Manifest Proteus OK</span>");
 				/* Headers check up */
 				if ($("#carrier_code_name").val().length==4) {
 						if ($("#carrier_name").val().length>1) {
@@ -297,6 +298,7 @@ function analise_data(data) {
 								if ($("#vessel_code").val().length>1) {
 									if ($("#departure").val().length==10) {
 										if ($("#pol").val().length==5) {
+											$("#result").html($("#result").html()+"<br><span style='color:green'>Headers OK</span>");
 											return(true);
 										} else {
 											error_front_end(8);
