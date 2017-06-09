@@ -174,6 +174,8 @@ var gotWritable = false;
 var modeDescription = '';
 var listItems="";
 $(document).ready(function () {
+    $("#departure").val(today);
+    $("#arrival").val(today);
 	$("#vessel_code_flag").select2();
 	$("#pol").select2();
 	$("#pod").select2();
@@ -184,7 +186,7 @@ $(document).ready(function () {
 		datacarriers=$.parseJSON(result);
 		for (var i = 0; i < datacarriers.length; i++) {
 			//console.log("datacarriers[i].val "+datacarriers[i].val);
-             listItems += "<option value='" + datacarriers[i].val + "'>"+datacarriers[i].val+ " " + datacarriers[i].text + "</option>";
+            listItems += "<option value='" + datacarriers[i].val + "'>"+datacarriers[i].val+ " " + datacarriers[i].text + "</option>";
          }
          $("#carrier_code_name").html(listItems);
     });
@@ -196,11 +198,19 @@ $(document).ready(function () {
 	$("#vessel_code").mask("aaa",{placeholder:"___"});
 	$("#export-btn").click(function(e) {
 		var rawdata=cleandata1($("#dataimport").val());
-		console.log("export button clicked");
 		if (analise_data(rawdata)) {
 			export_data(manifest_arrrows);
 		} else {
             alert("Spreadsheet not in the correct format");
         }
 	});
+    $("#export-liner-btn").click(function(e) {
+        var rawdata=cleandata1($("#dataimport").val());
+		console.log("export liner button clicked");
+        if (analise_data(rawdata)) {
+			
+		} else {
+            alert("Spreadsheet not in the correct format");
+        }
+    });
 });

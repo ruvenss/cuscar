@@ -2,7 +2,7 @@
  "name":"Cuscar",
  "manifest_version":2,
  "offline_enabled": true,
- "description":"CUSCAR EDI Manifest Export module.",
- "version":"0.5.9",
+ "description":"CUSCAR EDI, & Carriers Manifest Export module.",
+ "version":"0.8.1",
  "icons": {"128":"icon-cuscar-128x128.png","48": "icon-cuscar-48x48.png","16":"icon-cuscar-16x16.png"},
  "app": {"background": { "scripts": ["background.js"]}}}

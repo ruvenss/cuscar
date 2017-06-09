@@ -338,18 +338,18 @@ function analise_data(data) {
 	}
 }
 function error_front_end(code) {
-	var dialog = document.querySelector('#dialog1');
-	var errmsg="Error";
-	console.log("Logical Error Detected: code "+code);
-	if (code==1) { errmsg="Please paste some manifest data first"; }
-	if (code==2) { errmsg="Insufficient number of rows in the manifest"; }
-	if (code==3) { errmsg="Manifest Carrier Code is missing or incorrect"; }
-	if (code==4) { errmsg="Manifest Carrier Name is missing"; }
-	if (code==5) { errmsg="Vessel Name is missing"; }
-	if (code==6) { errmsg="Vessel Code is missing"; }
-	if (code==7) { errmsg="Departure date format is incorrect, please use YYYY-MM-DD"; }
-	if (code==8) { errmsg="Port of loading must be an UNLOCODE of 5 characters length"; }
-	if (code==9) { errmsg="Proteus manifest is fake, please use a the correct Proteus Manifest"; }
-	dialog.showModal();
-	$("#msgtext").text(errmsg);
+		var dialog = document.querySelector('#dialog1');
+		var errmsg="Error";
+		console.log("Logical Error Detected: code "+code);
+		if (code == 1) { errmsg = "Please paste some manifest data first"; }
+		if (code == 2) { errmsg = "Insufficient number of rows in the manifest"; }
+		if (code == 3) { errmsg = "Manifest Carrier Code is missing or incorrect"; }
+		if (code == 4) { errmsg = "Manifest Carrier Name is missing"; }
+		if (code == 5) { errmsg = "Vessel Name is missing"; }
+		if (code == 6) { errmsg = "Vessel Code is missing"; }
+		if (code == 7) { errmsg = "Departure date format is incorrect, please use YYYY-MM-DD"; }
+		if (code == 8) { errmsg = "Port of loading must be an UNLOCODE of 5 characters length"; }
+		if (code == 9) { errmsg = "Proteus manifest is fake, please use a the correct Proteus Manifest"; }
+		dialog.showModal();
+		$("#msgtext").text(errmsg);
 }
