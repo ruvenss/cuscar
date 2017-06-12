@@ -93,6 +93,112 @@ function cuscar_string(str) {
 function cleandata1(str){
 	return str.replace(/[:€™°]/g, ' ');
 }
+function SLAQ(arr_rows,bookingid,blnumber,pod,consignee,consignee_address,notify,shipper,vin,goods,blinstructions,weight,transit){
+	carrier_header='"BL.No";"City of Destination";"Country Code of destination";"Consignee";"Consignee Address";"Notify";"Shipper";"Shipper Address";"SerialNumber";"Description";"Unit count";"Weight";"Transit Indicator";"Transit Value"'+"\n"+ "\r";
+	var s = '";"';
+	var unitcount=1;
+	var pod_country="SN";
+	switch (pod) {
+		case "DAKAR":
+			pod_country="SN";
+			break;
+		case "MALI":
+			pod_country="GM";
+			break;	
+		default:
+			break;
+	}
+	console.log("SLAQ Carrier Manifest function of BL "+blnumber);
+	// Check for inclusive documents inside the manifest
+	for (var i = 0; i < arr_rows.length; i++) {
+		var current_subrow = arr_rows[i];
+		var manifest_subarrcols=current_subrow.split("\t");
+		if (manifest_subarrcols.length>=21) {
+			
+			if (bookingid===manifest_subarrcols[3]) {
+				unitcount = unitcount+1;
+				vin = vin+","+manifest_subarrcols[12];
+				goods = goods+","+manifest_subarrcols[10]+" "+manifest_subarrcols[11];
+				weight = parseInt(weight) + parseInt(manifest_subarrcols[15]);
+			}
+		}
+	}
+	carrier_manifest_body=carrier_manifest_body + '"' + blnumber + s + pod + s + pod_country + s + consignee + s + consignee_address + s + notify + s + shipper + s + 'SHIPPER ADDRESS' + s + vin + s + goods + ' ' + blinstructions+s+unitcount+ s + weight + s + transit + '"' +"\n" + "\r";
+}
+function export_manifest(arr_rows, callback) {
+	carrier_manifest_body="";
+	manifest_rows_checked=0;
+	if (arr_rows.length>0) {
+		console.log("Total lines for carrier manifest to convert= " + arr_rows.length);
+		for (var i = 0; i < arr_rows.length; i++) {
+			manifest_rows_checked=i;
+			var current_row = arr_rows[i];
+			manifest_arrcols=current_row.split("\t");
+			if (manifest_arrcols.length>=21) {
+				var bookingid=manifest_arrcols[0];
+				if (bookingid>0) {
+					
+					var blnumber=manifest_arrcols[1];
+					var pod=manifest_arrcols[2];
+					var pod_desc=manifest_arrcols[2];
+					var onblbookingid=manifest_arrcols[3];
+					var shipper=manifest_arrcols[5];
+					var consignee_address=removeDiacritics(manifest_arrcols[6].trim());
+					var consignee=removeDiacritics(cuscar_string(manifest_arrcols[7]));
+					var transit=manifest_arrcols[8].trim();
+					var notify=removeDiacritics(cuscar_string(manifest_arrcols[9]));
+					var condition=manifest_arrcols[10];
+					var goods=manifest_arrcols[10]+" "+manifest_arrcols[11];
+					var vin=cuscar_string(manifest_arrcols[12]);
+					var category=manifest_arrcols[13];
+					var blinstructions=removeDiacritics(manifest_arrcols[14]);
+					var weight=manifest_arrcols[15];
+					var volume=manifest_arrcols[16];
+					var goods_length=manifest_arrcols[17];
+					var goods_width=manifest_arrcols[18];
+					var goods_height=manifest_arrcols[19];
+					console.log("checking booking id: " + bookingid+ " BL: "+manifest_arrcols[1]+ " Carrier Code "+$("#carrier_code_name").val());
+					// Selecting function upon Carrier Code
+					
+					switch ($("#carrier_code_name").val()) {
+						case "SLAQ":
+							if (onblbookingid > 0) {
+								console.log("- Avoiding booking id: " + bookingid + " due to on bl condition onblbookingid="+onblbookingid);
+							} else {
+								SLAQ(arr_rows,bookingid,blnumber,pod,consignee,consignee_address,notify,shipper,vin,goods,blinstructions,weight,transit);
+							}
+							break;
+					
+						default:
+							break;
+					}
+				}
+			} else {
+				console.log("Incorrect number of columns in line "+i+ " this line has "+manifest_arrcols.length);
+			}
+		}
+		console.log("Export Finished");
+		carrier_manifest=carrier_header+carrier_manifest_body;
+		chrome.fileSystem.chooseEntry({type: 'saveFile', suggestedName: 'carrier_manifest_'+$("#carrier_code_name").val()+'_'+ today +'.csv'}, function(writableFileEntry) {
+			console.log("Saving...");
+			writableFileEntry.createWriter(function(writer) {
+		      //writer.onerror = errorHandler;
+		      writer.onwriteend = function(e) {
+		        console.log('write complete');
+		      };
+		      writer.write(new Blob([carrier_manifest], {type: 'text/plain'}));
+		    });
+		});
+		//dialog.close();
+		if (manifest_rows_checked===i){
+			 
+			callback(true);
+		}
+	} else {
+		error_front_end(1);
+		callback(false);
+	}
+}
 function export_data(arr_rows) {
 	var dialog = document.querySelector('#dialog2');
 	var cuscar_body="";
@@ -350,6 +456,7 @@ function error_front_end(code) {
 		if (code == 7) { errmsg = "Departure date format is incorrect, please use YYYY-MM-DD"; }
 		if (code == 8) { errmsg = "Port of loading must be an UNLOCODE of 5 characters length"; }
 		if (code == 9) { errmsg = "Proteus manifest is fake, please use a the correct Proteus Manifest"; }
+		if (code == 10) { errmsg = "The carrier is has not been register with RGWIT for manifest."; }
 		dialog.showModal();
 		$("#msgtext").text(errmsg);
 }

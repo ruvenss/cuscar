@@ -6,11 +6,15 @@ Update Date : 08-02-2017
 /* Vars Declaration : */		
 var importdata = "";
 var cuscar_manifest="";
+var carrier_manifest="";
+var carrier_manifest_body="";
+var carrier_header="";
 var manifest_cols=0;
 var manifest_arrrows=[];
 var manifest_arrcols=[];
 var onblmanifest_arrcols=[];
 var manifest_rows=0;
+var manifest_rows_checked=0;
 var today = new Date();
 var UnixTime = Math.round(+new Date()/10000);
 var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
@@ -201,16 +205,27 @@ $(document).ready(function () {
 		if (analise_data(rawdata)) {
 			export_data(manifest_arrrows);
 		} else {
-            alert("Spreadsheet not in the correct format");
+            console.log("Spreadsheet not in the correct format");
         }
 	});
     $("#export-liner-btn").click(function(e) {
+        $("#export-liner-btn").css("visibility","hidden");
         var rawdata=cleandata1($("#dataimport").val());
 		console.log("export liner button clicked");
         if (analise_data(rawdata)) {
-			
+			export_manifest(manifest_arrrows, function(result){
+                if (result===false) {
+                    //alert("The manifest data format is wrong");
+                     $("#export-liner-btn").css("visibility","visible");
+                } else {
+                    //alert("The manifest exported succesfully");
+                    $("#export-liner-btn").css("visibility","visible");
+                }
+            });
+            $("#export-liner-btn").css("visibility","visible");
 		} else {
-            alert("Spreadsheet not in the correct format");
+            //alert("Spreadsheet not in the correct format");
+            $("#export-liner-btn").css("visibility","visible");
         }
     });
 });
