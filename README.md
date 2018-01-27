@@ -1,4 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/7790f65f1e84f87434f7/maintainability)](https://codeclimate.com/github/ruvenss/cuscar/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/ruvenss/cuscar/badge.svg?branch=master)](https://coveralls.io/github/ruvenss/cuscar?branch=master)
 # cuscar manifest
 Cuscar Manifest data import 
 This application will allow you to import data from a economic manifest made in Excel Sheet 
